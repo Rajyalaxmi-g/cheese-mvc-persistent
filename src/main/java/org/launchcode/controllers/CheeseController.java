@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by LaunchCode
@@ -54,10 +55,12 @@ public class CheeseController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Cheese");
+            model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
         Category cat = categoryDao.findOne(categoryId);
+        System.out.println("cat= " + cat);
         newCheese.setCategory(cat);
         cheeseDao.save(newCheese);
 
@@ -66,6 +69,7 @@ public class CheeseController {
 
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String displayRemoveCheeseForm(Model model) {
+
         model.addAttribute("cheeses", cheeseDao.findAll());
         model.addAttribute("title", "Remove Cheese");
         return "cheese/remove";
@@ -75,10 +79,22 @@ public class CheeseController {
     public String processRemoveCheeseForm(@RequestParam int[] cheeseIds) {
 
         for (int cheeseId : cheeseIds) {
+            System.out.println("cheeseId = " + cheeseId);
             cheeseDao.delete(cheeseId);
+
         }
 
         return "redirect:";
+    }
+
+    @RequestMapping(value="category", method=RequestMethod.GET)
+    public String category(Model model, @RequestParam int id){
+
+        Category cat = categoryDao.findOne(id);
+        List<Cheese> cheeses = cat.getCheeses();
+        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("title","Cheeses in Category: "+ cat.getName());
+        return "cheese/index";
     }
 
 }

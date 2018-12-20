@@ -19,7 +19,14 @@ public class Category {
 
     @OneToMany
     @JoinColumn(name="category_id")
-    List<Cheese> cheeses = new ArrayList<>();
+    private List<Cheese> cheeses = new ArrayList<>();
+
+
+    public Category(){}
+
+    public Category(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -29,14 +36,17 @@ public class Category {
         return name;
     }
 
-    public Category(){}
-
-    public Category(String name) {
-        this.name = name;
-    }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Cheese> getCheeses() {
+        return cheeses;
+    }
+
+    public void setCheeses(List<Cheese> cheeses) {
+        this.cheeses = cheeses;
     }
 
     @Override
@@ -44,6 +54,7 @@ public class Category {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", cheeses=" + cheeses +
                 '}';
     }
 }

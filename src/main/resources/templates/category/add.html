@@ -6,6 +6,9 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
+<nav th:replace="fragments :: navigation"></nav>
+
+<div>
 <form th:object="${category}" method="post">
 
     <div class="form-group">
@@ -17,5 +20,6 @@
     <input type="submit" value="Add Category" />
 
 </form>
+</div>
 </body>
 </html>
